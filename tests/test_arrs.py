@@ -1,3 +1,5 @@
+import pytest
+
 from utils import arrs
 
 
@@ -6,9 +8,12 @@ def test_get():
     assert arrs.get([], -1, "test") == "test"
 
 
-def test_slice():
-    assert arrs.my_slice([1, 2, 3, 4], 1, 3) == [2, 3]
-    assert arrs.my_slice([1, 2, 3], 1) == [2, 3]
-    assert arrs.my_slice([]) == []
-    assert arrs.my_slice([1, 2, 3, 4], start=-5) == [1, 2, 3, 4]
-    assert arrs.my_slice([1, 2, 3, 4], start=-3) == [2, 3, 4]
+@pytest.mark.parametrize('a, b, c, result', [([1, 2, 3], 1, None, [2, 3]),
+                                             ([], None, None, []),
+                                             ([1, 2, 3, 4], -5, None, [1, 2, 3, 4]),
+                                             ([1, 2, 3, 4], -3, None, [2, 3, 4]),
+                                             ([1, 2, 3, 4], -3, -4, [])
+                                             ]
+                         )
+def test_slice(a, b, c, result):
+    assert arrs.my_slice(a, b, c) == result
